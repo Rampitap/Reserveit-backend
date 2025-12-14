@@ -20,43 +20,43 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(builder); // Обов'язково для Identity!
+        base.OnModelCreating(builder); 
 
-        // 1. Business -> Owner
+        //Business -> Owner
         builder.Entity<Business>()
             .HasOne(b => b.Owner)
             .WithMany()
             .HasForeignKey(b => b.OwnerId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // 2. User (Staff) -> Business
+        //User (Staff) -> Business
         builder.Entity<User>()
             .HasOne(u => u.WorksAtBusiness)
             .WithMany()
             .HasForeignKey(u => u.BusinessId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        // 3. Staff -> User account
+        //Staff -> User account
         builder.Entity<Staff>()
             .HasOne(s => s.User)
             .WithMany()
             .HasForeignKey(s => s.UserId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        // 4. Many-to-Many: Staff <-> Service
+        //Many-to-Many: Staff <-> Service
         builder.Entity<Staff>()
             .HasMany(s => s.Services)
             .WithMany(s => s.Staffs)
             .UsingEntity(j => j.ToTable("StaffServices"));
 
-        // 5. Reservation -> User
+        //Reservation -> User
         builder.Entity<Reservation>()
             .HasOne(r => r.Client)
             .WithMany(u => u.Reservations)
             .HasForeignKey(r => r.ClientId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // 6. Postgres specific configurations
+        
         builder.Entity<Business>().Property(b => b.OpeningTime).HasColumnType("time");
         builder.Entity<Business>().Property(b => b.ClosingTime).HasColumnType("time");
     }

@@ -19,10 +19,9 @@ public class Staff
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
     public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
 
-    // --- ЗВ'ЯЗКИ ---
-    // Які послуги надає цей майстер (Many-to-Many з Service)
+ 
     public ICollection<Service> Services { get; set; } = new List<Service>();
 
-    // Записи до цього майстра
+    
     public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }
