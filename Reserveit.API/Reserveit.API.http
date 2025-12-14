@@ -1,6 +1,5 @@
 @Reserveit.API_HostAddress = http://localhost:5054
 
-GET {{Reserveit.API_HostAddress}}/weatherforecast/
-Accept: application/json
 
-###
+
+
