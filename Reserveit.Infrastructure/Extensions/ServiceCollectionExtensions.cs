@@ -18,10 +18,10 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(connectionString));
 
-        services.AddIdentity<User, IdentityRole<Guid>>(options => { })
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
-
+        services.AddIdentityApiEndpoints<User>()
+           .AddRoles<IdentityRole<Guid>>()            
+           .AddEntityFrameworkStores<AppDbContext>();
+        services.AddAuthorizationBuilder();
         services.AddScoped<IReservationSeeder, ReservationSeeder>();
     }
 }
