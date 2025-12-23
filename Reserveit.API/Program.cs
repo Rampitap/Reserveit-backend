@@ -1,4 +1,5 @@
 using Reserveit.API.Extensions;
+using Reserveit.Application.Extensions;
 using Reserveit.Domain.Entities;
 using Reserveit.Infrastructure.Extensions;
 using Reserveit.Infrastructure.Seeders;
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.AddPresentation();
+builder.Services.AddApplication();
 builder.Services.AddInfrasrtucture(builder.Configuration);
 
 
