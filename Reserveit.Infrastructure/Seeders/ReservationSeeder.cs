@@ -15,19 +15,19 @@ internal class ReservationSeeder(
     {
         if (!await dbContext.Database.CanConnectAsync()) return;
 
-        // 1. Ролі
+      
         if (!dbContext.Roles.Any())
         {
             await SeedRolesAsync();
         }
 
-        // 2. Супер-Адмін
+        
         if (!dbContext.Users.Any(u => u.Email == "admin@reserveit.com"))
         {
             await SeedAdminAsync();
         }
 
-        // 3. Повні демо-дані (Бізнес + Персонал + Записи)
+        
         if (!dbContext.Businesses.Any())
         {
             await SeedFullDemoDataAsync();
@@ -36,7 +36,7 @@ internal class ReservationSeeder(
 
     private async Task SeedFullDemoDataAsync()
     {
-        // --- КРОК 1: Створюємо КЛІЄНТА ---
+        
         var clientUser = new User
         {
             Id = Guid.NewGuid(),
@@ -96,7 +96,7 @@ internal class ReservationSeeder(
         {
             DisplayName = "Dmytro TopMaster",
             Bio = "Senior barber with 5 years exp.",
-            UserId = staffDmytroUser.Id, // Зв'язок з акаунтом
+            UserId = staffDmytroUser.Id, 
             IsActive = true,
             
             Services = new List<Service> { serviceHaircut, serviceBeard }
@@ -177,15 +177,15 @@ internal class ReservationSeeder(
 
         dbContext.Businesses.Add(spa);
 
-        // Зберігаємо все разом!
+        
         await dbContext.SaveChangesAsync();
 
-        // Оновлюємо Staff User-а, щоб прописати йому BusinessId (тепер, коли бізнес створений)
+        
         staffDmytroUser.BusinessId = barbershop.Id;
         await userManager.UpdateAsync(staffDmytroUser);
     }
 
-    // --- Допоміжні методи (Roles & Admin) ---
+    
     private async Task SeedRolesAsync()
     {
         string[] roles = { UserRoles.Admin, UserRoles.Owner, UserRoles.Staff, UserRoles.Client };

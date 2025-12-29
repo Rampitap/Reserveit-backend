@@ -5,7 +5,7 @@ namespace Reserveit.Application.Common.DTOs.BuisnessDtos;
 
 public record BusinessDetailsDto
 (
-   Guid Id,
+    Guid Id,
     Guid OwnerId,       
     string Name,
     string? Description,
