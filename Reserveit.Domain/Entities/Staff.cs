@@ -17,11 +17,7 @@ public class Staff
 
     public bool IsActive { get; set; } = true;
     public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
-    public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
-
- 
-    public ICollection<Service> Services { get; set; } = new List<Service>();
-
-    
+    public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow; 
+    public ICollection<Service> Services { get; set; } = new List<Service>();    
     public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }
