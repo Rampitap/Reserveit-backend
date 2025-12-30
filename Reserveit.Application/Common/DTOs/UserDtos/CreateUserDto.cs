@@ -4,5 +4,6 @@ public record CreateUserDto
 (
     string Email,
     string Password,
-    string? FullName
+    string FirstName,
+    string LastName
 );

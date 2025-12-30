@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Reserveit.Domain.Constants;
 using Reserveit.Domain.Enums;
 
 namespace Reserveit.Domain.Entities;
 
 public class User : IdentityUser<Guid>
 {
-    public string? FullName { get; set; }
-    public Role Role { get; set; } = Role.Client;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public string? Timezone { get; set; } 
 
     public bool IsActive { get; set; } = true;

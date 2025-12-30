@@ -2,6 +2,7 @@
 
 public record UpdateProfileDto
 (
-string FullName,
-string? Phone
+     string FirstName,
+     string LastName,
+     string? Phone
 );

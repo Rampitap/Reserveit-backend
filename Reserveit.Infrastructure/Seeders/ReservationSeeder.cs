@@ -42,9 +42,11 @@ internal class ReservationSeeder(
             Id = Guid.NewGuid(),
             UserName = "client@demo.com",
             Email = "client@demo.com",
-            FullName = "Alex Customer",
+           // FullName = "Alex Customer",
+            FirstName = "Alex",
+            LastName = "Customerowski",
             EmailConfirmed = true,
-            Role = Role.Client
+            
         };
         await userManager.CreateAsync(clientUser, "Client123$");
         await userManager.AddToRoleAsync(clientUser, UserRoles.Client);
@@ -56,9 +58,11 @@ internal class ReservationSeeder(
             Id = Guid.NewGuid(),
             UserName = "barber@demo.com",
             Email = "barber@demo.com",
-            FullName = "John Barber Owner",
+            //FullName = "John Barber Owner",
+            FirstName = "John",
+            LastName = "Barberownerich",
             EmailConfirmed = true,
-            Role = Role.Owner
+            
         };
         await userManager.CreateAsync(barberOwner, "Owner123$");
         await userManager.AddToRoleAsync(barberOwner, UserRoles.Owner);
@@ -83,9 +87,11 @@ internal class ReservationSeeder(
             Id = Guid.NewGuid(),
             UserName = "dmytro@staff.com",
             Email = "dmytro@staff.com",
-            FullName = "Dmytro Master",
+            //FullName = "Dmytro Master",
+            FirstName = "Dmytro",
+            LastName = "Masterow",
             EmailConfirmed = true,
-            Role = Role.Staff,
+            
             
         };
         await userManager.CreateAsync(staffDmytroUser, "Staff123$");
@@ -149,9 +155,11 @@ internal class ReservationSeeder(
             Id = Guid.NewGuid(),
             UserName = "spa@demo.com",
             Email = "spa@demo.com",
-            FullName = "Anna Spa",
+            //FullName = "Anna Spa",
+            FirstName = "Ans",
+            LastName = "Spaowner",
             EmailConfirmed = true,
-            Role = Role.Owner
+            
         };
         await userManager.CreateAsync(spaOwner, "Owner123$");
         await userManager.AddToRoleAsync(spaOwner, UserRoles.Owner);
@@ -202,9 +210,11 @@ internal class ReservationSeeder(
             Id = Guid.NewGuid(),
             UserName = "admin@reserveit.com",
             Email = "admin@reserveit.com",
-            FullName = "Super Admin",
+            //FullName = "Super Admin",
+            FirstName = "Super",
+            LastName = "Admin",
             EmailConfirmed = true,
-            Role = Role.Admin,
+            
             IsActive = true
         };
         await userManager.CreateAsync(admin, "Admin123$");

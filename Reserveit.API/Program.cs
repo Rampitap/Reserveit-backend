@@ -14,8 +14,8 @@ builder.Services.AddApplication();
 builder.Services.AddInfrasrtucture(builder.Configuration);
 
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
@@ -38,9 +38,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGroup("api/identity")
-    .WithTags("Identity")
-    .MapIdentityApi<User>();
+app.UseCors("AllowReactApp");
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+//app.MapGroup("api/identity")
+//    .WithTags("Identity")
+//    .MapIdentityApi<User>();
 
 app.UseAuthorization();
 
