@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Reserveit.Application.CurrentUserService;
 
 namespace Reserveit.Application.Extensions;
 
@@ -15,5 +16,7 @@ public static class ServiceCollectionExtensions
         services.AddValidatorsFromAssembly(applicationAssembly);
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(applicationAssembly));
+
+        services.AddScoped<ICurrentUser, CurrentUser>();
     }
 }

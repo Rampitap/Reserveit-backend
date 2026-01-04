@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Reserveit.API.Middlewares;
+using Serilog;
 
 namespace Reserveit.API.Extensions
 {
@@ -76,7 +78,15 @@ namespace Reserveit.API.Extensions
                 }
             });
             });*/
+
+
             builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.AddScoped<RequestLoggerMiddlware>();
+            builder.Services.AddScoped<ErrorHadlingMiddleware>();
+
+            builder.Host.UseSerilog((context, configuration) =>
+                 configuration.ReadFrom.Configuration(context.Configuration));
         }
     }
 }

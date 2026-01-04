@@ -1,8 +1,10 @@
 using Reserveit.API.Extensions;
+using Reserveit.API.Middlewares;
 using Reserveit.Application.Extensions;
 using Reserveit.Domain.Entities;
 using Reserveit.Infrastructure.Extensions;
 using Reserveit.Infrastructure.Seeders;
+using Serilog;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -25,6 +27,8 @@ var seeder = scope.ServiceProvider.GetRequiredService<IReservationSeeder>();
 
 await seeder.Seed();
 
+app.UseMiddleware<ErrorHadlingMiddleware>();
+app.UseMiddleware<RequestLoggerMiddlware>();
 
 if (app.Environment.IsDevelopment())
 {
@@ -32,7 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseSerilogRequestLogging();
+app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 
@@ -43,9 +47,7 @@ app.UseCors("AllowReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
 
-//app.MapGroup("api/identity")
-//    .WithTags("Identity")
-//    .MapIdentityApi<User>();
+
 
 app.UseAuthorization();
 

@@ -35,5 +35,6 @@ public static class ServiceCollectionExtensions
         services.AddAuthorizationBuilder();
         services.AddScoped<IReservationSeeder, ReservationSeeder>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IProfileService, ProfileService>();
     }
 }

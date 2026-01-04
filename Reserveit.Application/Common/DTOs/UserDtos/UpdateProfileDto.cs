@@ -1,8 +1,7 @@
 ﻿namespace Reserveit.Application.Common.DTOs.UserDtos;
 
-public record UpdateProfileDto
-(
-     string FirstName,
-     string LastName,
-     string? Phone
-);
+public sealed class UpdateProfileDto
+{
+    public string FirstName { get; init; } = default!;
+    public string LastName { get; init; } = default!;
+}
