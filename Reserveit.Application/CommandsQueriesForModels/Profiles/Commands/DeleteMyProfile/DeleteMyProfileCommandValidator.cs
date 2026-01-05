@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Reserveit.Application.Profiles.Commands.DeleteMyProfile;
+namespace Reserveit.Application.CommandsQueriesForModels.Profiles.Commands.DeleteMyProfile;
 
 public sealed class DeleteMyProfileCommandValidator : AbstractValidator<DeleteMyProfileCommand>
 {

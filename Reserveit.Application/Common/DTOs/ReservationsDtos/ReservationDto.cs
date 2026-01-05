@@ -1,27 +1,26 @@
 ﻿namespace Reserveit.Application.Common.DTOs.ReservationsDtos;
 
-public record ReservationDto
-(
-    Guid Id,
+public sealed class ReservationDto
+{
+    public Guid Id { get; set; }
 
-    
-    Guid BusinessId,
-    string BusinessName,
-    string? BusinessAddress,
+    public Guid BusinessId { get; set; }
+    public string BusinessName { get; set; } = null!;
+    public string? BusinessAddress { get; set; }
 
-    
-    Guid ServiceId,
-    string ServiceName,
-    decimal? Price,
-    int DurationMinutes,
+    public Guid ServiceId { get; set; }
+    public string ServiceName { get; set; } = null!;
+    public decimal? Price { get; set; }
+    public int DurationMinutes { get; set; }
 
-    
-    Guid? StaffId,
-    string? StaffName,
+    public Guid? StaffId { get; set; }
+    public string? StaffName { get; set; }
 
-    
-    DateTimeOffset StartAt,
-    DateTimeOffset EndAt,
-    string Status,      
-    string? Notes
-);
+    public Guid? ClientId { get; set; }
+    public string? ClientName { get; set; }
+
+    public DateTimeOffset StartAt { get; set; }
+    public DateTimeOffset EndAt { get; set; }
+    public string Status { get; set; } = null!;
+    public string? Notes { get; set; }
+}

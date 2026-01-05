@@ -4,7 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Reserveit.Application.Interfaces;
 using Reserveit.Domain.Entities;
+using Reserveit.Domain.Interfaces;
 using Reserveit.Infrastructure.Persistence;
+using Reserveit.Infrastructure.Repositories;
 using Reserveit.Infrastructure.Seeders;
 using Reserveit.Infrastructure.Services;
 
@@ -36,5 +38,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IReservationSeeder, ReservationSeeder>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IProfileService, ProfileService>();
+        services.AddScoped<IStaffRepository, StaffRepository>();
+        services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddScoped<IServiceRepository, ServiceRepository>();
     }
 }

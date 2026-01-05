@@ -2,8 +2,9 @@
 
 public record CreateReservationDto
 (
-    Guid ServiceId,       
-    Guid? StaffId,        
-    DateTimeOffset StartAt, 
+    Guid BusinessId,     
+    Guid ServiceId,
+    Guid StaffId,        
+    DateTimeOffset StartAt,
     string? Notes
 );

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Reserveit.Application.Profiles.Commands.UpdateMyPassword;
+namespace Reserveit.Application.CommandsQueriesForModels.Profiles.Commands.UpdateMyPassword;
 
 public sealed class UpdateMyPasswordCommandValidator : AbstractValidator<UpdateMyPasswordCommand>
 {

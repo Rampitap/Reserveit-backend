@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Reserveit.Application.Profiles.Commands.UpdateMyProfile;
+namespace Reserveit.Application.CommandsQueriesForModels.Profiles.Commands.UpdateMyProfile;
 
 public sealed class UpdateMyProfileCommandValidator : AbstractValidator<UpdateMyProfileCommand>
 {

@@ -5,7 +5,7 @@ using Reserveit.Application.CurrentUserService;
 using Reserveit.Application.Interfaces;
 using System.Security.Principal;
 
-namespace Reserveit.Application.Profiles.Commands.DeleteMyProfile;
+namespace Reserveit.Application.CommandsQueriesForModels.Profiles.Commands.DeleteMyProfile;
 
 public sealed class DeleteMyProfileCommandHandler : IRequestHandler<DeleteMyProfileCommand>
 {

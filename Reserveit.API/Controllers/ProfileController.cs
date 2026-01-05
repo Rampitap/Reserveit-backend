@@ -3,10 +3,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Reserveit.Application.Common.DTOs.UserDtos;
-using Reserveit.Application.Profiles.Commands.DeleteMyProfile;
-using Reserveit.Application.Profiles.Commands.UpdateMyPassword;
-using Reserveit.Application.Profiles.Commands.UpdateMyProfile;
-using Reserveit.Application.Profiles.Queries.GetMyProfile;
+using Reserveit.Application.CommandsQueriesForModels.Profiles.Commands.DeleteMyProfile;
+using Reserveit.Application.CommandsQueriesForModels.Profiles.Commands.UpdateMyPassword;
+using Reserveit.Application.CommandsQueriesForModels.Profiles.Commands.UpdateMyProfile;
+using Reserveit.Application.CommandsQueriesForModels.Profiles.Queries.GetMyProfile;
 using System.ComponentModel.DataAnnotations;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 

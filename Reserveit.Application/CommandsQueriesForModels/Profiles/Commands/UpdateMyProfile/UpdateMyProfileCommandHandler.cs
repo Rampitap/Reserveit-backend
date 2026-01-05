@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Reserveit.Application.CurrentUserService;
 using Reserveit.Domain.Entities;
 
-namespace Reserveit.Application.Profiles.Commands.UpdateMyProfile;
+namespace Reserveit.Application.CommandsQueriesForModels.Profiles.Commands.UpdateMyProfile;
 
 public sealed class UpdateMyProfileCommandHandler : IRequestHandler<UpdateMyProfileCommand>
 {

@@ -6,7 +6,7 @@ using Reserveit.Application.Common.DTOs.UserDtos;
 using Reserveit.Application.CurrentUserService;
 using Reserveit.Domain.Entities;
 
-namespace Reserveit.Application.Profiles.Queries.GetMyProfile;
+namespace Reserveit.Application.CommandsQueriesForModels.Profiles.Queries.GetMyProfile;
 
 public sealed class GetMyProfileQueryHandler : IRequestHandler<GetMyProfileQuery, UserProfileDto>
 {

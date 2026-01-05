@@ -1,6 +1,8 @@
 ﻿namespace Reserveit.Domain.Exceptions;
 
-public class ForbidException : Exception
+public sealed class ForbiddenException : Exception
 {
-
+    public ForbiddenException(string message) : base(message)
+    {
+    }
 }

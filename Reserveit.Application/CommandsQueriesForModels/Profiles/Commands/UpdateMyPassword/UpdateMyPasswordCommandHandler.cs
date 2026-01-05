@@ -7,7 +7,7 @@ using Reserveit.Application.Interfaces;
 using Reserveit.Domain.Entities;
 using System.Security.Principal;
 
-namespace Reserveit.Application.Profiles.Commands.UpdateMyPassword;
+namespace Reserveit.Application.CommandsQueriesForModels.Profiles.Commands.UpdateMyPassword;
 
 public sealed class UpdateMyPasswordCommandHandler : IRequestHandler<UpdateMyPasswordCommand>
 {
