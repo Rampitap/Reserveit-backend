@@ -120,6 +120,23 @@ public class ReservationRepository: IReservationRepository
             .ToListAsync(ct);
     }
 
+
+    public async Task<List<Reservation>> GetBlockingForStaffAsync(
+    Guid staffId,
+    DateTimeOffset from,
+    DateTimeOffset to,
+    CancellationToken ct)
+    {
+        return await _context.Reservations
+            .AsNoTracking()
+            .Where(r => r.StaffId == staffId)
+            .Where(r => r.StartAt < to && r.EndAt > from) // ✅ crossing
+            .Where(r => r.Status == ReservationStatus.Pending || r.Status == ReservationStatus.Confirmed) // ✅ blocking statuses
+            .OrderBy(r => r.StartAt)
+            .ToListAsync(ct);
+    }
+
+
     //повернутися до редагування пізніше
     public async Task<bool> IsSlotAvailableAsync(
     Guid businessId,

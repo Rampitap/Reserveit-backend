@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Reserveit.Application.CommandsQueriesForModels.Clients.Commands.CancelClientReservation;
 using Reserveit.Application.CommandsQueriesForModels.Clients.Commands.CreateReservation;
 using Reserveit.Application.CommandsQueriesForModels.Clients.Queries.GetMyClientReservations;
 using Reserveit.Application.Common.DTOs.ReservationsDtos;
@@ -26,4 +27,12 @@ public sealed class ClientReservationsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetMine([FromQuery] GetMyClientReservationsQuery query)
     => Ok(await _mediator.Send(query));
+
+
+    [HttpPatch("{id:guid}/cancel")]
+    public async Task<IActionResult> Cancel([FromRoute] Guid id)
+    {
+        await _mediator.Send(new CancelClientReservationCommand(id));
+        return NoContent();
+    }
 }

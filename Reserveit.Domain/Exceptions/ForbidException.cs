@@ -2,7 +2,6 @@
 
 public sealed class ForbiddenException : Exception
 {
-    public ForbiddenException(string message) : base(message)
-    {
-    }
+    public ForbiddenException() : base("Access denied.") { }
+    public ForbiddenException(string message) : base(message) { }
 }

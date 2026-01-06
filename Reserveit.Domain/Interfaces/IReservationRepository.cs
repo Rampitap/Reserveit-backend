@@ -10,6 +10,12 @@ public interface IReservationRepository
     Task<List<Reservation>> GetByClientIdAsync(Guid clientId, int page, int pageSize, CancellationToken cancellationToken);
     Task<List<Reservation>> GetByBusinessIdAsync(Guid businessId, int page, int pageSize, CancellationToken cancellationToken);
 
+    Task<List<Reservation>> GetBlockingForStaffAsync(
+        Guid staffId,
+        DateTimeOffset from,
+        DateTimeOffset to,
+        CancellationToken ct);
+
     Task<List<Reservation>> GetForStaffRangeAsync(
         Guid staffId,
         DateTimeOffset from,
