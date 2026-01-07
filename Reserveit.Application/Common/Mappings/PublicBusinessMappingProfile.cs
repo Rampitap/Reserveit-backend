@@ -28,5 +28,10 @@ public sealed class PublicBusinessMappingProfile : Profile
         // mini mappers
         CreateMap<Staff, PublicStaffMiniDto>();
         CreateMap<Service, PublicServiceMiniDto>();
+
+        // Business -> PublicBusinessSummaryDto
+        CreateMap<Business, PublicBusinessSummaryDto>()
+            .ForMember(d => d.OpeningTime, o => o.MapFrom(s => s.OpeningTime.HasValue ? s.OpeningTime.Value.ToString(@"hh\:mm") : null))
+            .ForMember(d => d.ClosingTime, o => o.MapFrom(s => s.ClosingTime.HasValue ? s.ClosingTime.Value.ToString(@"hh\:mm") : null));
     }
 }

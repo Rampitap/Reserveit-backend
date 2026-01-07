@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Reserveit.Application.CommandsQueriesForModels.Businesses.Queries.GetAllPublicBusinesses;
 using Reserveit.Application.CommandsQueriesForModels.Businesses.Queries.GetPublicBusiness;
 using Reserveit.Application.CommandsQueriesForModels.Businesses.Queries.GetPublicBusinessServices;
 using Reserveit.Application.CommandsQueriesForModels.Businesses.Queries.GetPublicBusinessStaff;
@@ -24,4 +25,8 @@ public sealed class BusinessController : ControllerBase
     [HttpGet("{id:guid}/staff")]
     public async Task<IActionResult> GetBusinessStaff([FromRoute] Guid id)
         => Ok(await _mediator.Send(new GetPublicBusinessStaffQuery(id)));
+
+    [HttpGet("/all")]
+    public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 12, [FromQuery] string? q = null)
+    => Ok(await _mediator.Send(new GetPublicBusinessesQuery(page, pageSize, q)));
 }

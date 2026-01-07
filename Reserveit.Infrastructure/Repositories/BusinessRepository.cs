@@ -35,4 +35,54 @@ public sealed class BusinessRepository : IBusinessRepository
             .Include(st => st.Services.Where(s => s.IsActive))
             .OrderBy(st => st.DisplayName)
             .ToListAsync(ct);
+
+    public async Task<List<Business>> SearchPublicAsync(int page, int pageSize, string? q, CancellationToken ct)
+    {
+        page = page < 1 ? 1 : page;
+        pageSize = pageSize < 1 ? 12 : pageSize;
+
+        var query = _db.Businesses
+            .AsNoTracking()
+            .Where(b => b.IsActive);
+
+        if (!string.IsNullOrWhiteSpace(q))
+        {
+            q = q.Trim();
+            query = query.Where(b =>
+                b.Name.Contains(q) ||
+                (b.Address != null && b.Address.Contains(q)));
+        }
+
+        return await query
+            .OrderBy(b => b.Name)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(ct);
+    }
+
+    public async Task<int> CountPublicAsync(string? q, CancellationToken ct)
+    {
+        var query = _db.Businesses.AsNoTracking().Where(b => b.IsActive);
+
+        if (!string.IsNullOrWhiteSpace(q))
+        {
+            q = q.Trim();
+            query = query.Where(b =>
+                b.Name.Contains(q) ||
+                (b.Address != null && b.Address.Contains(q)));
+        }
+
+        return await query.CountAsync(ct);
+    }
+
+    public Task<bool> IsOwnedByAsync(Guid businessId, Guid ownerId, CancellationToken ct)
+    {
+        return _db.Businesses
+            .AsNoTracking()
+            .AnyAsync(b =>
+                b.Id == businessId &&
+                b.OwnerId == ownerId &&
+                b.IsActive,
+                ct);
+    }
 }
