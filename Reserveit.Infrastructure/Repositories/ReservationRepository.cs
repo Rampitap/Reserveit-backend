@@ -82,6 +82,46 @@ public class ReservationRepository: IReservationRepository
             .OrderBy(r => r.StartAt)
             .ToListAsync(ct);
     }
+
+
+    public async Task<(List<Reservation> Items, long TotalCount)> GetForBusinessRangeAsync(
+    Guid businessId,
+    DateTimeOffset from,
+    DateTimeOffset to,
+    ReservationStatus? status,
+    Guid? staffId,
+    int page,
+    int pageSize,
+    CancellationToken ct)
+    {
+        page = page < 1 ? 1 : page;
+        pageSize = pageSize < 1 ? 20 : pageSize;
+
+        var q = _context.Reservations
+            .AsNoTracking()
+            .Where(r => r.BusinessId == businessId)
+            .Where(r => r.StartAt >= from && r.StartAt < to);
+
+        if (status.HasValue)
+            q = q.Where(r => r.Status == status.Value);
+
+        if (staffId.HasValue)
+            q = q.Where(r => r.StaffId == staffId.Value);
+
+        var total = await q.LongCountAsync(ct);
+
+        var items = await q
+            .OrderBy(r => r.StartAt)
+            .Include(r => r.Business)
+            .Include(r => r.Service)
+            .Include(r => r.Staff)
+            .Include(r => r.Client)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(ct);
+
+        return (items, total);
+    }
     #endregion
 
 
@@ -157,6 +197,18 @@ public class ReservationRepository: IReservationRepository
             query = query.Where(r => r.StaffId == staffId.Value);
 
         return !await query.AnyAsync(ct);
+    }
+
+
+    public Task<bool> HasFutureForStaffAsync(Guid staffId, DateTimeOffset nowUtc, CancellationToken ct)
+    {
+        return _context.Reservations
+            .AsNoTracking()
+            .AnyAsync(r =>
+                r.StaffId == staffId &&
+                r.StartAt > nowUtc &&
+                r.Status != ReservationStatus.Cancelled,
+                ct);
     }
 
     #region commands

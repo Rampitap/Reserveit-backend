@@ -17,4 +17,29 @@ public class StaffRepository : IStaffRepository
     => _db.Staffs
         .AsNoTracking()
         .FirstOrDefaultAsync(s => s.Id == staffId && s.IsActive, ct);
+
+    public Task<List<Staff>> GetByBusinessIdAsync(Guid businessId, CancellationToken ct)
+       => _db.Staffs
+           .AsNoTracking()
+           .Where(s => s.BusinessId == businessId)
+           .OrderByDescending(s => s.IsActive)
+           .ThenBy(s => s.DisplayName)
+           .ToListAsync(ct);
+
+    public Task<Staff?> GetByBusinessAndIdAsync(Guid businessId, Guid staffId, CancellationToken ct)
+        => _db.Staffs
+            .AsNoTracking()
+            .FirstOrDefaultAsync(s => s.BusinessId == businessId && s.Id == staffId, ct);
+
+
+    public Task<Staff?> GetTrackedByBusinessAndIdAsync(Guid businessId, Guid staffId, CancellationToken ct)
+    => _db.Staffs.FirstOrDefaultAsync(s => s.BusinessId == businessId && s.Id == staffId, ct);
+
+    public Task DeleteAsync(Staff staff, CancellationToken ct)
+    {
+        _db.Staffs.Remove(staff);
+        return Task.CompletedTask;
+    }
+
+    public Task SaveChangesAsync(CancellationToken ct) => _db.SaveChangesAsync(ct);
 }

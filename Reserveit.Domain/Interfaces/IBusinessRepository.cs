@@ -12,4 +12,6 @@ public interface IBusinessRepository
     Task<int> CountPublicAsync(string? q, CancellationToken ct);
 
     Task<bool> IsOwnedByAsync(Guid businessId, Guid ownerId, CancellationToken ct);
+
+    Task<List<Business>> GetByOwnerIdAsync(Guid ownerId, CancellationToken ct);
 }

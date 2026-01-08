@@ -10,6 +10,16 @@ public interface IReservationRepository
     Task<List<Reservation>> GetByClientIdAsync(Guid clientId, int page, int pageSize, CancellationToken cancellationToken);
     Task<List<Reservation>> GetByBusinessIdAsync(Guid businessId, int page, int pageSize, CancellationToken cancellationToken);
 
+    Task<(List<Reservation> Items, long TotalCount)> GetForBusinessRangeAsync(
+        Guid businessId,
+        DateTimeOffset from,
+        DateTimeOffset to,
+        ReservationStatus? status,
+        Guid? staffId,
+        int page,
+        int pageSize,
+        CancellationToken ct);
+
     Task<List<Reservation>> GetBlockingForStaffAsync(
         Guid staffId,
         DateTimeOffset from,
@@ -41,6 +51,9 @@ public interface IReservationRepository
 
     // check slot availability
     Task<bool> IsSlotAvailableAsync(Guid businessId, Guid? staffId, DateTimeOffset start, DateTimeOffset end, CancellationToken cancellationToken);
+
+
+    Task<bool> HasFutureForStaffAsync(Guid staffId, DateTimeOffset nowUtc, CancellationToken ct);
 
     // Commands
     Task AddAsync(Reservation reservation, CancellationToken cancellationToken);

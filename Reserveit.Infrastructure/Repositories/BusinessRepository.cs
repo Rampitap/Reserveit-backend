@@ -85,4 +85,11 @@ public sealed class BusinessRepository : IBusinessRepository
                 b.IsActive,
                 ct);
     }
+
+    public Task<List<Business>> GetByOwnerIdAsync(Guid ownerId, CancellationToken ct)
+    => _db.Businesses
+        .AsNoTracking()
+        .Where(b => b.OwnerId == ownerId)
+        .OrderBy(b => b.Name)
+        .ToListAsync(ct);
 }

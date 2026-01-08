@@ -58,6 +58,12 @@ public class ErrorHadlingMiddleware(ILogger<ErrorHadlingMiddleware> logger) : IM
                 message = ex.Message
             });
         }
+        catch (ConflictException ex)
+        {
+            logger.LogWarning(ex, "Conflict");
+            context.Response.StatusCode = StatusCodes.Status409Conflict;
+            await WriteJson(context, new { message = ex.Message });
+        }
         catch (Exception ex)
         {
             logger.LogError(ex, "Unhandled exception");
@@ -68,6 +74,7 @@ public class ErrorHadlingMiddleware(ILogger<ErrorHadlingMiddleware> logger) : IM
                 message = "Internal server error"
             });
         }
+        
     }
 
     private static async Task WriteJson(HttpContext context, object body)
