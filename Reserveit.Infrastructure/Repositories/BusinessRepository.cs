@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Reserveit.Domain.Entities;
-using Reserveit.Infrastructure.Persistence;
+using Reserveit.Domain.Enums;
 using Reserveit.Domain.Interfaces;
+using Reserveit.Infrastructure.Persistence;
 
 namespace Reserveit.Infrastructure.Repositories;
 
@@ -92,4 +93,28 @@ public sealed class BusinessRepository : IBusinessRepository
         .Where(b => b.OwnerId == ownerId)
         .OrderBy(b => b.Name)
         .ToListAsync(ct);
+
+    public Task<Business?> GetByIdAsync(Guid id, CancellationToken ct)
+        => _db.Businesses.FirstOrDefaultAsync(b => b.Id == id, ct);
+
+
+    public async Task AddAsync(Business business, CancellationToken ct)
+        => await _db.Businesses.AddAsync(business, ct);
+
+    public Task DeleteAsync(Business business, CancellationToken ct)
+    {
+        _db.Businesses.Remove(business);
+        return Task.CompletedTask;
+    }
+
+    public Task SaveChangesAsync(CancellationToken ct)
+        => _db.SaveChangesAsync(ct);
+
+    public Task<bool> HasFutureConfirmedReservationsAsync(Guid businessId, DateTimeOffset nowUtc, CancellationToken ct)
+      => _db.Reservations.AsNoTracking()
+          .AnyAsync(r =>
+              r.BusinessId == businessId &&
+              r.Status == ReservationStatus.Confirmed &&
+              r.StartAt > nowUtc,
+              ct);
 }

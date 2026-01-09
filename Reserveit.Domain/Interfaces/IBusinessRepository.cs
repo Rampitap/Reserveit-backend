@@ -12,6 +12,15 @@ public interface IBusinessRepository
     Task<int> CountPublicAsync(string? q, CancellationToken ct);
 
     Task<bool> IsOwnedByAsync(Guid businessId, Guid ownerId, CancellationToken ct);
+    public Task<Business?> GetByIdAsync(Guid id, CancellationToken ct);
 
     Task<List<Business>> GetByOwnerIdAsync(Guid ownerId, CancellationToken ct);
+
+    Task AddAsync(Business business, CancellationToken ct);
+
+    Task DeleteAsync(Business business, CancellationToken ct);
+
+    Task SaveChangesAsync(CancellationToken ct);
+
+    Task<bool> HasFutureConfirmedReservationsAsync(Guid businessId, DateTimeOffset nowUtc, CancellationToken ct);
 }

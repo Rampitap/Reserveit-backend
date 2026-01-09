@@ -1,6 +1,6 @@
 ﻿namespace Reserveit.Application.Common.DTOs.BuisnessDtos;
 
-public sealed class CreateBusinessDto
+public sealed class UpdateBusinessDto
 {
     public string Name { get; init; } = null!;
     public string? Address { get; init; }

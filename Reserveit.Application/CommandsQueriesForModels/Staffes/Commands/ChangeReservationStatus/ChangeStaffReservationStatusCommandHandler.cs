@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Reserveit.Application.CurrentUserService;
+using Reserveit.Application.Interfaces;
 using Reserveit.Domain.Enums;
 using Reserveit.Domain.Exceptions;
 using Reserveit.Domain.Interfaces;
@@ -16,19 +17,22 @@ public sealed class ChangeStaffReservationStatusCommandHandler
     private readonly IReservationRepository _reservationRepository;
     private readonly IValidator<ChangeStaffReservationStatusCommand> _validator;
     private readonly ILogger<ChangeStaffReservationStatusCommandHandler> _logger;
+    private readonly INotificationQueue  _notificationQueue;
 
     public ChangeStaffReservationStatusCommandHandler(
         ICurrentUser currentUser,
         IStaffRepository staffRepository,
         IReservationRepository reservationRepository,
         IValidator<ChangeStaffReservationStatusCommand> validator,
-        ILogger<ChangeStaffReservationStatusCommandHandler> logger)
+        ILogger<ChangeStaffReservationStatusCommandHandler> logger,
+        INotificationQueue notificationQueue)
     {
         _currentUser = currentUser;
         _staffRepository = staffRepository;
         _reservationRepository = reservationRepository;
         _validator = validator;
         _logger = logger;
+        _notificationQueue = notificationQueue;
     }
 
     public async Task Handle(ChangeStaffReservationStatusCommand request, CancellationToken ct)
@@ -98,5 +102,8 @@ public sealed class ChangeStaffReservationStatusCommandHandler
         _logger.LogInformation(
             "Reservation status changed by staff. ReservationId={ReservationId}, From={From}, To={To}, StaffId={StaffId}",
             reservation.Id, from, to, staff.Id);
+
+
+        await _notificationQueue.EnqueueReservationStatusChangedAsync(reservation.Id, from.ToString(), to.ToString(), ct);
     }
 }

@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Reserveit.Application.CurrentUserService;
+using Reserveit.Application.Interfaces;
 using Reserveit.Domain.Entities;
 using Reserveit.Domain.Enums;
 using Reserveit.Domain.Exceptions;
@@ -18,6 +19,7 @@ public sealed class CreateClientReservationCommandHandler
     private readonly IReservationRepository _reservationRepository;
     private readonly IValidator<CreateClientReservationCommand> _validator;
     private readonly ILogger<CreateClientReservationCommandHandler> _logger;
+    private readonly INotificationQueue _notificationQueue;
 
     public CreateClientReservationCommandHandler(
         ICurrentUser currentUser,
@@ -25,7 +27,8 @@ public sealed class CreateClientReservationCommandHandler
         IStaffRepository staffRepository,
         IReservationRepository reservationRepository,
         IValidator<CreateClientReservationCommand> validator,
-        ILogger<CreateClientReservationCommandHandler> logger)
+        ILogger<CreateClientReservationCommandHandler> logger,
+        INotificationQueue notificationQueue)
     {
         _currentUser = currentUser;
         _serviceRepository = serviceRepository;
@@ -33,6 +36,7 @@ public sealed class CreateClientReservationCommandHandler
         _reservationRepository = reservationRepository;
         _validator = validator;
         _logger = logger;
+        _notificationQueue = notificationQueue;
     }
 
     public async Task<Guid> Handle(CreateClientReservationCommand request, CancellationToken ct)
@@ -88,6 +92,7 @@ public sealed class CreateClientReservationCommandHandler
         await _reservationRepository.SaveChangesAsync(ct);
 
         _logger.LogInformation("Client reservation created. Id={Id}", reservation.Id);
+        await _notificationQueue.EnqueueReservationCreatedAsync(reservation.Id, ct);
 
         return reservation.Id;
     }

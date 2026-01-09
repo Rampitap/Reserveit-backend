@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Reserveit.Application.CurrentUserService;
+using Reserveit.Application.Interfaces;
 using Reserveit.Domain.Enums;
 using Reserveit.Domain.Exceptions;
 using Reserveit.Domain.Interfaces;
@@ -14,17 +15,20 @@ public sealed class CancelClientReservationCommandHandler : IRequestHandler<Canc
     private readonly IReservationRepository _reservationRepository;
     private readonly IValidator<CancelClientReservationCommand> _validator;
     private readonly ILogger<CancelClientReservationCommandHandler> _logger;
+    private readonly INotificationQueue _notificationQueue;
 
     public CancelClientReservationCommandHandler(
         ICurrentUser currentUser,
         IReservationRepository reservationRepository,
         IValidator<CancelClientReservationCommand> validator,
-        ILogger<CancelClientReservationCommandHandler> logger)
+        ILogger<CancelClientReservationCommandHandler> logger,
+        INotificationQueue notificationQueue)
     {
         _currentUser = currentUser;
         _reservationRepository = reservationRepository;
         _validator = validator;
         _logger = logger;
+        _notificationQueue = notificationQueue;
     }
 
     public async Task Handle(CancelClientReservationCommand request, CancellationToken ct)
@@ -48,6 +52,9 @@ public sealed class CancelClientReservationCommandHandler : IRequestHandler<Canc
         if (reservation.StartAt <= DateTimeOffset.UtcNow)
             throw new InvalidOperationException("Anable to cancel this reservation (past reservations).");
 
+        var from = reservation.Status;                
+        var to = ReservationStatus.Cancelled;
+
         reservation.Status = ReservationStatus.Cancelled;
         reservation.UpdatedAt = DateTimeOffset.UtcNow;
 
@@ -56,5 +63,11 @@ public sealed class CancelClientReservationCommandHandler : IRequestHandler<Canc
         _logger.LogInformation(
             "Client cancelled reservation. ReservationId={ReservationId}, ClientId={ClientId}",
             reservation.Id, _currentUser.UserId);
+
+        await _notificationQueue.EnqueueReservationStatusChangedAsync(
+        reservation.Id,
+        from.ToString(),
+        to.ToString(),
+        ct);
     }
 }
