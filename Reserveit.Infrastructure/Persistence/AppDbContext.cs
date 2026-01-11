@@ -17,6 +17,7 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<Auditlog> AuditLogs { get; set; }
+    public DbSet<Category> Categories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -59,5 +60,16 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
         
         builder.Entity<Business>().Property(b => b.OpeningTime).HasColumnType("time");
         builder.Entity<Business>().Property(b => b.ClosingTime).HasColumnType("time");
+
+        builder.Entity<Category>()
+             .Property(c => c.Name)
+             .HasMaxLength(100)
+             .IsRequired();
+
+        builder.Entity<Business>()
+            .HasOne(b => b.Category)
+            .WithMany(c => c.Businesses)
+            .HasForeignKey(b => b.CategoryId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

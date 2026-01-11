@@ -8,6 +8,8 @@ public class Business
     public Guid OwnerId { get; set; }
     public User Owner { get; set; } = null!;
 
+    public Guid? CategoryId { get; set; }
+    public Category? Category { get; set; }
 
     public string Name { get; set; } = null!;
     public string? Address { get; set; }
