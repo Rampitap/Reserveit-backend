@@ -21,6 +21,7 @@ builder.Services.AddInfrasrtucture(builder.Configuration);
 
 
 var app = builder.Build();
+app.LogStartupBanner();
 
 var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<IReservationSeeder>();
