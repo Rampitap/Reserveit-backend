@@ -28,16 +28,18 @@ internal class ReservationSeeder(
             await SeedAdminAsync();
         }
 
-        
+        if (!dbContext.Categories.Any())
+        {
+            await SeedCategoriesAsync();
+        }
+
+
         if (!dbContext.Businesses.Any())
         {
             await SeedFullDemoDataAsync();
         }
 
-        if (!dbContext.Categories.Any())
-        {
-            await SeedCategoriesAsync();
-        }
+       
     }
 
     private async Task SeedFullDemoDataAsync()

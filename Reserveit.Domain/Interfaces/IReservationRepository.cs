@@ -1,6 +1,5 @@
 ﻿using Reserveit.Domain.Entities;
 using Reserveit.Domain.Enums;
-
 namespace Reserveit.Domain.Interfaces;
 
 public interface IReservationRepository
@@ -9,6 +8,10 @@ public interface IReservationRepository
     Task<Reservation?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<List<Reservation>> GetByClientIdAsync(Guid clientId, int page, int pageSize, CancellationToken cancellationToken);
     Task<List<Reservation>> GetByBusinessIdAsync(Guid businessId, int page, int pageSize, CancellationToken cancellationToken);
+
+    Task<Dictionary<ReservationStatus, int>> GetClientStatusCountsAsync(
+    Guid clientId,
+    CancellationToken ct);
 
     Task<(List<Reservation> Items, long TotalCount)> GetForBusinessRangeAsync(
         Guid businessId,

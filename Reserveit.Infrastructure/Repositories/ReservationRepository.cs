@@ -42,6 +42,16 @@ public class ReservationRepository: IReservationRepository
             .ToListAsync(ct);
     }
 
+    public async Task<Dictionary<ReservationStatus, int>> GetClientStatusCountsAsync(Guid clientId, CancellationToken ct)
+    {
+        return await _context.Reservations
+            .AsNoTracking()
+            .Where(r => r.ClientId == clientId)
+            .GroupBy(r => r.Status)
+            .Select(g => new { Status = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.Status, x => x.Count, ct);
+    }
+
     public async Task<List<Reservation>> GetByBusinessIdAsync(Guid businessId, int page, int pageSize, CancellationToken ct) 
     {
         page = page < 1 ? 1 : page;
