@@ -23,4 +23,8 @@ public interface IBusinessRepository
     Task SaveChangesAsync(CancellationToken ct);
 
     Task<bool> HasFutureConfirmedReservationsAsync(Guid businessId, DateTimeOffset nowUtc, CancellationToken ct);
+
+    Task<List<Business>> GetPublicByCategoryAsync(int page, int pageSize, string? q, Guid? categoryId, string? categoryName, CancellationToken ct);
+
+    Task<int> CountPublicByCategoryAsync(string? q, Guid? categoryId, string? categoryName, CancellationToken ct);
 }

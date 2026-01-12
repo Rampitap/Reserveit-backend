@@ -53,6 +53,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserAccountService, UserAccountService>();
         services.AddScoped<INotificationQueue, NotificationQueue>();
         services.AddScoped<IAdminUserRepository, AdminUserRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 
         #region Fluent Email Configuration

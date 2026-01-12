@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Reserveit.Application.CommandsQueriesForModels.Businesses.Queries.GetAllPublicBusinesses;
 using Reserveit.Application.CommandsQueriesForModels.Businesses.Queries.GetPublicBusiness;
+using Reserveit.Application.CommandsQueriesForModels.Businesses.Queries.GetPublicBusinessesByCategory;
 using Reserveit.Application.CommandsQueriesForModels.Businesses.Queries.GetPublicBusinessServices;
 using Reserveit.Application.CommandsQueriesForModels.Businesses.Queries.GetPublicBusinessStaff;
 
@@ -29,4 +30,19 @@ public sealed class BusinessController : ControllerBase
     [HttpGet("all")]
     public async Task<IActionResult> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 12, [FromQuery] string? q = null)
     => Ok(await _mediator.Send(new GetPublicBusinessesQuery(page, pageSize, q)));
+
+    [HttpGet("all/by-category")]
+    public async Task<IActionResult> GetByCategory(
+    [FromQuery] int page = 1,
+    [FromQuery] int pageSize = 12,
+    [FromQuery] string? q = null,
+    [FromQuery] Guid? categoryId = null,
+    [FromQuery] string? category = null,
+    CancellationToken ct = default)
+    {
+        var result = await _mediator.Send(
+            new GetPublicBusinessesByCategoryQuery(page, pageSize, q, categoryId, category), ct);
+
+        return Ok(result);
+    }
 }

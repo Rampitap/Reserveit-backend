@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Reserveit.Domain.Constants;
 using Reserveit.Domain.Entities;
 using Reserveit.Domain.Enums;
@@ -31,6 +32,11 @@ internal class ReservationSeeder(
         if (!dbContext.Businesses.Any())
         {
             await SeedFullDemoDataAsync();
+        }
+
+        if (!dbContext.Categories.Any())
+        {
+            await SeedCategoriesAsync();
         }
     }
 
@@ -117,7 +123,14 @@ internal class ReservationSeeder(
             Services = new List<Service> { serviceBeard }
         };
 
-        
+        var barberCategory = await dbContext.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Name == "Barber");
+
+        if (barberCategory == null)
+            throw new Exception("Category 'Barber' not found. SeedCategoriesAsync must run first.");
+
+
         var barbershop = new Business
         {
             Name = "Elite Barbershop",
@@ -126,6 +139,7 @@ internal class ReservationSeeder(
             OpeningTime = new TimeSpan(10, 0, 0),
             ClosingTime = new TimeSpan(21, 0, 0),
             IsActive = true,
+            CategoryId = barberCategory.Id,
             Services = new List<Service> { serviceHaircut, serviceBeard },
             StaffMembers = new List<Staff> { staffDmytro, staffIvan }
         };
@@ -172,6 +186,8 @@ internal class ReservationSeeder(
             Services = new List<Service> { serviceMassage }
         };
 
+        var beautyCategory = await dbContext.Categories.FirstAsync(c => c.Name == "Beauty");
+
         var spa = new Business
         {
             Name = "Lotus Spa",
@@ -179,6 +195,8 @@ internal class ReservationSeeder(
             OwnerId = spaOwner.Id,
             OpeningTime = new TimeSpan(9, 0, 0),
             ClosingTime = new TimeSpan(20, 0, 0),
+            CategoryId = beautyCategory.Id,
+            IsActive = true,
             Services = new List<Service> { serviceMassage },
             StaffMembers = new List<Staff> { staffOlena }
         };
@@ -219,5 +237,18 @@ internal class ReservationSeeder(
         };
         await userManager.CreateAsync(admin, "Admin123$");
         await userManager.AddToRoleAsync(admin, UserRoles.Admin);
+    }
+    private async Task SeedCategoriesAsync()
+    {
+        if (dbContext.Categories.Any()) return;
+
+        dbContext.Categories.AddRange(
+            new Category { Id = Guid.NewGuid(), Name = "Beauty" },
+            new Category { Id = Guid.NewGuid(), Name = "Barber" },
+            new Category { Id = Guid.NewGuid(), Name = "Massage" },
+            new Category { Id = Guid.NewGuid(), Name = "Dentistry" }
+        );
+
+        await dbContext.SaveChangesAsync();
     }
 }
