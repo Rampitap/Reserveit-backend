@@ -8,4 +8,5 @@ public sealed class CreateBusinessDto
     public TimeSpan? OpeningTime { get; init; }
     public TimeSpan? ClosingTime { get; init; }
     public string? CancellationPolicyJson { get; init; }
+    public Guid? CategoryId { get; init; }
 }

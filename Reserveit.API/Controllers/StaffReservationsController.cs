@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Reserveit.Application.CommandsQueriesForModels.Categories.Queries.GetMyReservationStatusStats;
 using Reserveit.Application.CommandsQueriesForModels.Staffes.Commands.ChangeReservationStatus;
 using Reserveit.Application.CommandsQueriesForModels.Staffes.Queries.GetMyStaffReservations;
 using Reserveit.Application.Common.DTOs.ReservationsDtos;
@@ -26,4 +27,8 @@ public sealed class StaffReservationsController : ControllerBase
         await _mediator.Send(new ChangeStaffReservationStatusCommand(reservationId, body));
         return NoContent();
     }
+
+    [HttpGet("my/stats")]
+    public async Task<IActionResult> GetMyStats(CancellationToken ct)
+    => Ok(await _mediator.Send(new GetMyReservationStatusStatsQuery(), ct));
 }

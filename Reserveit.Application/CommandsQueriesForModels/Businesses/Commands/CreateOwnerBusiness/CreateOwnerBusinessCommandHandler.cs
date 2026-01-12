@@ -41,6 +41,7 @@ public sealed class CreateOwnerBusinessCommandHandler : IRequestHandler<CreateOw
             OpeningTime = request.Data.OpeningTime,
             ClosingTime = request.Data.ClosingTime,
             CancellationPolicyJson = request.Data.CancellationPolicyJson,
+            CategoryId = request.Data.CategoryId,
             IsActive = true,
             CreatedAt = DateTimeOffset.UtcNow,
             UpdatedAt = DateTimeOffset.UtcNow
