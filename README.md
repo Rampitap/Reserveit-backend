@@ -134,7 +134,7 @@ Mapping via AutoMapper
 
 Logging via Serilog
 
-Auth via ASP.NET Identity / JWT (depending on configuration)
+Auth via ASP.NET Identity 
 
 Notes for Frontend Developers
 Use Swagger to explore endpoints: /swagger
