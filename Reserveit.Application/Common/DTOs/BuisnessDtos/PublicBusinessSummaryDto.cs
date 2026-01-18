@@ -7,5 +7,8 @@ public sealed class PublicBusinessSummaryDto
     public string? Address { get; set; }
     public string Timezone { get; set; } = "UTC";
     public string? OpeningTime { get; set; }
+    public string? ImageUrl { get; set; }
+    public Guid? CategoryId { get; set; }
+    public string? CategoryName { get; init; }
     public string? ClosingTime { get; set; }
 }

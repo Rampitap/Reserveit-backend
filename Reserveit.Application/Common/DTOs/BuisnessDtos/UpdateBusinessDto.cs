@@ -8,4 +8,6 @@ public sealed class UpdateBusinessDto
     public TimeSpan? OpeningTime { get; init; }
     public TimeSpan? ClosingTime { get; init; }
     public string? CancellationPolicyJson { get; init; }
+    public string? ImageUrl { get; init; }
+    public Guid? CategoryId { get; init; }
 }

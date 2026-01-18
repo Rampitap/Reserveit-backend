@@ -43,6 +43,7 @@ public sealed class UpdateOwnerBusinessCommandHandler : IRequestHandler<UpdateOw
         business.Timezone = request.Data.Timezone;
         business.OpeningTime = request.Data.OpeningTime;
         business.ClosingTime = request.Data.ClosingTime;
+        business.ImageUrl = request.Data.ImageUrl;
         business.CancellationPolicyJson = request.Data.CancellationPolicyJson;
         business.UpdatedAt = DateTimeOffset.UtcNow;
 

@@ -8,5 +8,8 @@ public sealed class OwnerBusinessSummaryDto
     public string Timezone { get; set; } = "UTC";
     public string? OpeningTime { get; set; }
     public string? ClosingTime { get; set; }
+    public string? ImageUrl { get; set; }
+    public Guid? CategoryId { get; set; }
+    public string? CategoryName { get; init; }
     public bool IsActive { get; set; }
 }

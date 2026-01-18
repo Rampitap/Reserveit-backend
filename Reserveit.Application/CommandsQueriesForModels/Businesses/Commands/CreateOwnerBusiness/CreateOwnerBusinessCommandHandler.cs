@@ -44,6 +44,7 @@ public sealed class CreateOwnerBusinessCommandHandler : IRequestHandler<CreateOw
             CategoryId = request.Data.CategoryId,
             IsActive = true,
             CreatedAt = DateTimeOffset.UtcNow,
+            ImageUrl = request.Data.ImageUrl,
             UpdatedAt = DateTimeOffset.UtcNow
         };
 

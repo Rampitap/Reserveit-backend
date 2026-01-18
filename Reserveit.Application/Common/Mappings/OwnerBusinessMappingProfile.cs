@@ -12,6 +12,10 @@ public sealed class OwnerBusinessMappingProfile : Profile
             .ForMember(d => d.OpeningTime,
                 o => o.MapFrom(s => s.OpeningTime.HasValue ? s.OpeningTime.Value.ToString(@"hh\:mm") : null))
             .ForMember(d => d.ClosingTime,
-                o => o.MapFrom(s => s.ClosingTime.HasValue ? s.ClosingTime.Value.ToString(@"hh\:mm") : null));
+                o => o.MapFrom(s => s.ClosingTime.HasValue ? s.ClosingTime.Value.ToString(@"hh\:mm") : null))
+            .ForMember(d => d.ImageUrl,
+                o => o.MapFrom(s => s.ImageUrl))
+             .ForMember(d => d.CategoryName,
+                o => o.MapFrom(s => s.Category != null ? s.Category.Name : null));
     }
 }

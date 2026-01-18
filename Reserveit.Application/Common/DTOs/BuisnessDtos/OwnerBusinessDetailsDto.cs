@@ -10,6 +10,9 @@ public sealed class OwnerBusinessDetailsDto
     public TimeSpan? ClosingTime { get; init; }
     public string? CancellationPolicyJson { get; init; }
     public bool IsActive { get; init; }
+    public string? ImageUrl { get; set; }
+    public Guid? CategoryId { get; set; }
+    public string? CategoryName { get; init; }
     public DateTimeOffset CreatedAt { get; init; }
     public DateTimeOffset UpdatedAt { get; init; }
 }
