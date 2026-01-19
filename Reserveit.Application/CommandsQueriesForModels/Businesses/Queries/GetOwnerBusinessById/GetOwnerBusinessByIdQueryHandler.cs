@@ -54,7 +54,10 @@ public sealed class GetOwnerBusinessByIdQueryHandler
             CancellationPolicyJson = business.CancellationPolicyJson,
             IsActive = business.IsActive,
             CreatedAt = business.CreatedAt,
-            UpdatedAt = business.UpdatedAt
+            UpdatedAt = business.UpdatedAt,
+            ImageUrl = business.ImageUrl,
+            CategoryId = business.CategoryId,
+            CategoryName = business.Category?.Name
         };
     }
 }

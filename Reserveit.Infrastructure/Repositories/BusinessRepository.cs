@@ -15,6 +15,7 @@ public sealed class BusinessRepository : IBusinessRepository
         => _db.Businesses
             .AsNoTracking()
             .Where(b => b.Id == businessId && b.IsActive)
+            .Include(b => b.Category)
             .Include(b => b.Services.Where(s => s.IsActive))
                 .ThenInclude(s => s.Staffs.Where(st => st.IsActive))
             .Include(b => b.StaffMembers.Where(st => st.IsActive))
@@ -44,6 +45,7 @@ public sealed class BusinessRepository : IBusinessRepository
 
         var query = _db.Businesses
             .AsNoTracking()
+            .Include(b => b.Category)
             .Where(b => b.IsActive);
 
         if (!string.IsNullOrWhiteSpace(q))
@@ -91,11 +93,15 @@ public sealed class BusinessRepository : IBusinessRepository
     => _db.Businesses
         .AsNoTracking()
         .Where(b => b.OwnerId == ownerId)
+        .Include(b => b.Category)
         .OrderBy(b => b.Name)
         .ToListAsync(ct);
 
     public Task<Business?> GetByIdAsync(Guid id, CancellationToken ct)
-        => _db.Businesses.FirstOrDefaultAsync(b => b.Id == id, ct);
+        => _db.Businesses
+            .AsNoTracking()
+            .Include(b => b.Category)
+            .FirstOrDefaultAsync(b => b.Id == id, ct);
 
 
     public async Task AddAsync(Business business, CancellationToken ct)
