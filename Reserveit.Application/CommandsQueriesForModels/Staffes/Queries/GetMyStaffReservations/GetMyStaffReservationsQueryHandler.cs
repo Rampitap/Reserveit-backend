@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Reserveit.Application.Common.DTOs.ReservationsDtos;
+using Reserveit.Application.Common.Pagination;
 using Reserveit.Application.CurrentUserService;
 using Reserveit.Domain.Enums;
 using Reserveit.Domain.Interfaces;
@@ -10,7 +11,7 @@ using Reserveit.Domain.Interfaces;
 namespace Reserveit.Application.CommandsQueriesForModels.Staffes.Queries.GetMyStaffReservations;
 
 public sealed class GetMyStaffReservationsQueryHandler
-    : IRequestHandler<GetMyStaffReservationsQuery, IReadOnlyList<ReservationDto>>
+    : IRequestHandler<GetMyStaffReservationsQuery, PagedResult<ReservationDto>>
 {
     private readonly ICurrentUser _currentUser;
     private readonly IStaffRepository _staffRepository;
@@ -35,7 +36,7 @@ public sealed class GetMyStaffReservationsQueryHandler
         _logger = logger;
     }
 
-    public async Task<IReadOnlyList<ReservationDto>> Handle(GetMyStaffReservationsQuery request, CancellationToken ct)
+    public async Task<PagedResult<ReservationDto>> Handle(GetMyStaffReservationsQuery request, CancellationToken ct)
     {
         var vr = await _validator.ValidateAsync(request, ct);
         if (!vr.IsValid)
@@ -50,29 +51,55 @@ public sealed class GetMyStaffReservationsQueryHandler
             throw new UnauthorizedAccessException("Staff profile not found for this user");
         }
 
-        var reservations = await _reservationRepository.GetForStaffRangeAsync(
-            staff.Id, request.From, request.To, request.Status, ct);
+        var page = request.Page < 1 ? 1 : request.Page;
+        var pageSize = request.PageSize < 1 ? 12 : request.PageSize;
 
-        // сортування для календаря/списку
-        reservations = request.Sort switch
+        // items 
+        var items = await _reservationRepository.GetForStaffRangeAsync(
+            staff.Id,
+            request.From,
+            request.To,
+            request.Status,
+            page,
+            pageSize,
+            ct);
+
+        // total 
+        var total = await _reservationRepository.CountForStaffRangeAsync(
+            staff.Id,
+            request.From,
+            request.To,
+            request.Status,
+            ct);
+
+        // 
+        items = request.Sort switch
         {
-            ReservationSort.StartDesc => reservations.OrderByDescending(r => r.StartAt).ToList(),
+            ReservationSort.StartDesc =>
+                items.OrderByDescending(r => r.StartAt).ToList(),
 
-            ReservationSort.StatusThenStart => reservations
-                .OrderBy(r => r.Status == ReservationStatus.Confirmed ? 0 :
-                              r.Status == ReservationStatus.Pending ? 1 : 2)
-                .ThenBy(r => r.StartAt)
-                .ToList(),
+            ReservationSort.StatusThenStart =>
+                items.OrderBy(r => r.Status == ReservationStatus.Confirmed ? 0 :
+                                   r.Status == ReservationStatus.Pending ? 1 : 2)
+                     .ThenBy(r => r.StartAt)
+                     .ToList(),
 
-            _ => reservations.OrderBy(r => r.StartAt).ToList()
+            _ =>
+                items.OrderBy(r => r.StartAt).ToList()
         };
 
-        var dto = reservations.Select(_mapper.Map<ReservationDto>).ToList();
+        var dto = items.Select(_mapper.Map<ReservationDto>).ToList();
 
         _logger.LogInformation(
-            "Staff reservations loaded. StaffId={StaffId}, From={From}, To={To}, Count={Count}",
-            staff.Id, request.From, request.To, dto.Count);
+            "Staff reservations loaded. StaffId={StaffId}, From={From}, To={To}, Page={Page}, PageSize={PageSize}, Total={Total}",
+            staff.Id, request.From, request.To, page, pageSize, total);
 
-        return dto;
+        return new PagedResult<ReservationDto>
+        {
+            Page = page,
+            PageSize = pageSize,
+            Total = total,
+            Items = dto
+        };
     }
 }

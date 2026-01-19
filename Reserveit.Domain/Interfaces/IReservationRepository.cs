@@ -29,12 +29,8 @@ public interface IReservationRepository
         DateTimeOffset to,
         CancellationToken ct);
 
-    Task<List<Reservation>> GetForStaffRangeAsync(
-        Guid staffId,
-        DateTimeOffset from,
-        DateTimeOffset to,
-        ReservationStatus? status,
-        CancellationToken ct);
+    Task<List<Reservation>> GetForStaffRangeAsync(Guid staffId, DateTimeOffset from, DateTimeOffset to, ReservationStatus? status, int page, int pageSize, CancellationToken ct);
+
 
 
     // staff today / upcoming
@@ -65,4 +61,17 @@ public interface IReservationRepository
 
     // Sacve changes
     Task SaveChangesAsync(CancellationToken cancellationToken);
+
+    Task<int> CountByClientIdAsync(Guid clientId, ReservationStatus? status, CancellationToken ct);
+
+    Task<int> CountForStaffRangeAsync(
+        Guid staffId,
+        DateTimeOffset from,
+        DateTimeOffset to,
+        ReservationStatus? status,
+        CancellationToken ct);
+
+    Task<int> CountByBusinessIdAsync(Guid businessId, ReservationStatus? status, CancellationToken ct);
+
+  
 }
