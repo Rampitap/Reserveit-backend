@@ -10,4 +10,4 @@ public sealed record GetPublicBusinessesByCategoryQuery(
     string? Q = null,
     Guid? CategoryId = null,
     string? Category = null
-) : IRequest<PagedResult<PublicBusinessCardDto>>;
+) : IRequest<PagedResult<OwnerBusinessSummaryDto>>;

@@ -7,7 +7,7 @@ using Reserveit.Domain.Interfaces;
 namespace Reserveit.Application.CommandsQueriesForModels.Businesses.Queries.GetPublicBusinessesByCategory;
 
 public sealed class GetPublicBusinessesByCategoryQueryHandler
-    : IRequestHandler<GetPublicBusinessesByCategoryQuery, PagedResult<PublicBusinessCardDto>>
+    : IRequestHandler<GetPublicBusinessesByCategoryQuery, PagedResult<OwnerBusinessSummaryDto>>
 {
     private readonly IBusinessRepository _businessRepository;
     private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ public sealed class GetPublicBusinessesByCategoryQueryHandler
         _mapper = mapper;
     }
 
-    public async Task<PagedResult<PublicBusinessCardDto>> Handle(GetPublicBusinessesByCategoryQuery request, CancellationToken ct)
+    public async Task<PagedResult<OwnerBusinessSummaryDto>> Handle(GetPublicBusinessesByCategoryQuery request, CancellationToken ct)
     {
         var page = request.Page < 1 ? 1 : request.Page;
         var pageSize = request.PageSize < 1 ? 12 : request.PageSize;
@@ -29,12 +29,12 @@ public sealed class GetPublicBusinessesByCategoryQueryHandler
         var total = await _businessRepository.CountPublicByCategoryAsync(
             request.Q, request.CategoryId, request.Category, ct);
 
-        return new PagedResult<PublicBusinessCardDto>
+        return new PagedResult<OwnerBusinessSummaryDto>
         {
             Page = page,
             PageSize = pageSize,
             Total = total,
-            Items = items.Select(_mapper.Map<PublicBusinessCardDto>).ToList()
+            Items = items.Select(_mapper.Map<OwnerBusinessSummaryDto>).ToList()
         };
     }
 }
