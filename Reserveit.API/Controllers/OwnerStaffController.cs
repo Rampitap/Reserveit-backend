@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Reserveit.Application.CommandsQueriesForModels.Staffes.Commands.CreateStaffByOwner;
 using Reserveit.Application.CommandsQueriesForModels.Staffes.Commands.DeleteOwnerStaff;
+using Reserveit.Application.CommandsQueriesForModels.Staffes.Commands.UpdateOwnerStaff;
 using Reserveit.Application.CommandsQueriesForModels.Staffes.Commands.UpdateOwnerStaffStatus;
 using Reserveit.Application.CommandsQueriesForModels.Staffes.Queries.GetOwnerBusinessStaff;
 using Reserveit.Application.CommandsQueriesForModels.Staffes.Queries.GetOwnerBusinessStaffById;
@@ -34,7 +35,7 @@ public sealed class OwnerStaffController : ControllerBase
 
 
 
-    [HttpGet("business/{businessId:guid}/staff{staffId:guid}")]
+    [HttpGet("business/{businessId:guid}/staff/{staffId:guid}")]
     public async Task<IActionResult> GetById([FromRoute] Guid businessId, [FromRoute] Guid staffId, CancellationToken ct)
         => Ok(await _mediator.Send(new GetOwnerBusinessStaffByIdQuery(businessId, staffId), ct));
 
@@ -58,6 +59,17 @@ public sealed class OwnerStaffController : ControllerBase
         CancellationToken ct)
     {
         await _mediator.Send(new DeleteOwnerStaffCommand(businessId, staffId), ct);
+        return NoContent();
+    }
+
+    [HttpPut("business/{businessId:guid}/staff/{staffId:guid}")]
+    public async Task<IActionResult> Update(
+    [FromRoute] Guid businessId,
+    [FromRoute] Guid staffId,
+    [FromBody] UpdateOwnerStaffDto body,
+    CancellationToken ct)
+    {
+        await _mediator.Send(new UpdateOwnerStaffCommand(businessId, staffId, body), ct);
         return NoContent();
     }
 }
