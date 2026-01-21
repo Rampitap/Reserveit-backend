@@ -1,4 +1,5 @@
 ﻿using FluentEmail.MailKitSmtp;
+using MailKit.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -69,7 +70,8 @@ public static class ServiceCollectionExtensions
                 User = smtp["User"],
                 Password = smtp["Password"],
                 RequiresAuthentication = !string.IsNullOrWhiteSpace(smtp["User"]),
-                UseSsl = bool.Parse(smtp["UseSsl"] ?? "false")
+                UseSsl = bool.Parse(smtp["UseSsl"] ?? "true"),
+                SocketOptions = SecureSocketOptions.StartTls
             });
 
         services.AddHostedService<EmailNotificationWorker>();

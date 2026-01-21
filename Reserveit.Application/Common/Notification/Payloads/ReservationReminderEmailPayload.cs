@@ -2,8 +2,12 @@
 
 namespace Reserveit.Application.Common.Notification.Payloads;
 
-public sealed class ReservationReminderEmailPayload
+public sealed class ReservationReminderEmailPayload : EmailPayloadBase
 {
-    public string Type { get; init; } = NotificationType.ReservationReminder;
     public Guid ReservationId { get; init; }
+
+    public ReservationReminderEmailPayload()
+    {
+        Type = NotificationType.ReservationReminder;
+    }
 }
