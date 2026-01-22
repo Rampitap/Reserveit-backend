@@ -21,7 +21,9 @@ public sealed class ReservationMappingProfile : Profile
                 s.Client != null
                     ? ((s.Client.FirstName + " " + s.Client.LastName).Trim())
                     : string.Empty
-            ));
+            ))
+            .ForMember(d => d.ClientEmail, o => o.MapFrom(s => s.Client != null ? s.Client.Email : null))
+            .ForMember(d => d.StaffEmail, o => o.MapFrom(s => s.Staff != null && s.Staff.User != null ? s.Staff.User.Email : null)); 
     }
 }
 

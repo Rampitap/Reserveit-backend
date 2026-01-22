@@ -20,7 +20,8 @@ public class ReservationRepository: IReservationRepository
         return await _context.Reservations
             .Include(r => r.Service)
             .Include(r => r.Business)
-            .Include(r => r.Staff)
+            .Include(r => r.Client)
+            .Include(r => r.Staff).ThenInclude(s => s.User)
             .FirstOrDefaultAsync(r => r.Id == id, ct);
     }
 
@@ -40,7 +41,7 @@ public class ReservationRepository: IReservationRepository
             .Take(pageSize)
             .Include(r => r.Service)
             .Include(r => r.Business)
-            .Include(r => r.Staff)
+            .Include(r => r.Staff).ThenInclude(s => s.User)
             .Include(r => r.Client)
             .ToListAsync(ct);
     }

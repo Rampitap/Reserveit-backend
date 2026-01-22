@@ -15,9 +15,11 @@ public sealed class ReservationDto
 
     public Guid? StaffId { get; set; }
     public string? StaffName { get; set; }
+    public string? StaffEmail { get; set; }
 
     public Guid? ClientId { get; set; }
     public string? ClientName { get; set; }
+    public string? ClientEmail { get; set; }
 
     public DateTimeOffset StartAt { get; set; }
     public DateTimeOffset EndAt { get; set; }

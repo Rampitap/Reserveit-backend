@@ -21,6 +21,7 @@ public class StaffRepository : IStaffRepository
     public Task<List<Staff>> GetByBusinessIdAsync(Guid businessId, CancellationToken ct)
        => _db.Staffs
            .AsNoTracking()
+           .Include(s => s.User)
            .Where(s => s.BusinessId == businessId)
            .OrderByDescending(s => s.IsActive)
            .ThenBy(s => s.DisplayName)

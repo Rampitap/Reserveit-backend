@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Reserveit.Application.CommandsQueriesForModels.Reservations.Commands.ChangeBusinessReservationStatus;
 using Reserveit.Application.CommandsQueriesForModels.Reservations.Queries.GetBusinessReservations;
+using Reserveit.Application.Common.DTOs.ReservationsDtos;
 using Reserveit.Domain.Constants;
 using Reserveit.Domain.Enums;
 
@@ -37,4 +39,17 @@ public sealed class OwnerReservationsController : ControllerBase
 
         return Ok(await _mediator.Send(query, ct));
     }
+
+    [HttpPatch("{reservationId:guid}/status")]
+    public async Task<IActionResult> ChangeStatus(
+       [FromRoute] Guid businessId,
+       [FromRoute] Guid reservationId,
+       [FromBody] ChangeReservationStatusDto dto,
+       CancellationToken ct = default)
+    {
+        await _mediator.Send(new ChangeBusinessReservationStatusCommand(businessId, reservationId, dto), ct);
+        return NoContent();
+    }
+
+
 }

@@ -16,6 +16,8 @@ public sealed class OwnerReservationMappingProfile : Profile
             .ForMember(d => d.DurationMinutes, o => o.MapFrom(s => s.Service.DurationMinutes))
             .ForMember(d => d.StaffName, o => o.MapFrom(s => s.Staff != null ? s.Staff.DisplayName : null))
             .ForMember(d => d.ClientName, o => o.MapFrom(s => (s.Client.FirstName + " " + s.Client.LastName).Trim()))
-            .ForMember(d => d.Status, o => o.MapFrom(s => s.Status.ToString()));
+            .ForMember(d => d.Status, o => o.MapFrom(s => s.Status.ToString()))
+            .ForMember(d => d.ClientEmail, o => o.MapFrom(s => s.Client.Email))
+            .ForMember(d => d.StaffEmail, o => o.MapFrom(s => s.Staff != null && s.Staff.User != null ? s.Staff.User.Email : null));
     }
 }
