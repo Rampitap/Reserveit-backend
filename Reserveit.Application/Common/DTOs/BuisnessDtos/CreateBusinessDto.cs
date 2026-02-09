@@ -10,5 +10,5 @@ public sealed class CreateBusinessDto
     public string? CancellationPolicyJson { get; init; }
     public Guid? CategoryId { get; init; }
     public string? ImageUrl { get; init; }
-    //public Guid? CategoryId { get; init; }
+    
 }

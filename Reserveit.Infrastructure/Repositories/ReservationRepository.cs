@@ -187,8 +187,8 @@ public class ReservationRepository: IReservationRepository
         return await _context.Reservations
             .AsNoTracking()
             .Where(r => r.StaffId == staffId)
-            .Where(r => r.StartAt < to && r.EndAt > from) // ✅ crossing
-            .Where(r => r.Status == ReservationStatus.Pending || r.Status == ReservationStatus.Confirmed) // ✅ blocking statuses
+            .Where(r => r.StartAt < to && r.EndAt > from) //  crossing
+            .Where(r => r.Status == ReservationStatus.Pending || r.Status == ReservationStatus.Confirmed) // blocking statuses
             .OrderBy(r => r.StartAt)
             .ToListAsync(ct);
     }

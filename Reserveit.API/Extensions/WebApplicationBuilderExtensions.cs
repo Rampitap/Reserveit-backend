@@ -13,7 +13,7 @@ namespace Reserveit.API.Extensions
             {
                 options.AddPolicy("AllowReactApp", policy =>
                 {
-                    policy.WithOrigins("http://localhost:3000", "http://localhost:5173") // підстав урлу фронта
+                    policy.WithOrigins("http://localhost:3000", "http://localhost:5173") //frintend url
                           .AllowAnyMethod()
                           .AllowAnyHeader()
                           .AllowCredentials(); 
@@ -29,7 +29,7 @@ namespace Reserveit.API.Extensions
                 options.ExpireTimeSpan = TimeSpan.FromDays(7);
                 options.SlidingExpiration = true;
 
-                // wgo redirektit na login page, my budem povertat 401, 403 status codes
+                // returns 401, 403 status codes
                 options.Events.OnRedirectToLogin = context =>
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
